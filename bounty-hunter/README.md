@@ -72,7 +72,7 @@ $dbusername = "admin";
 $dbpassword = "m19RoAU0hP41A1sTsq6K";
 $testuser = "test";
 ```
-![Image](https://raw.githubusercontent.com/sigwotts/HTB-Walkthrough/main/bounty-hunter/Screenshot%202021-09-08%20at%203.56.36%20AM.png?token=AS3E3VMLGWIXHFH252PLCTTBHIZH6)
+![Image](https://raw.githubusercontent.com/sigwotts/HTB-Walkthrough/main/bounty-hunter/Screenshot%202021-09-08%20at%203.56.36%20AM.png)
 
 
 
@@ -131,6 +131,7 @@ lxd:x:998:100::/var/snap/lxd/common/lxd:/bin/false
 usbmux:x:112:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
 
 ``` 
+![Image](https://raw.githubusercontent.com/sigwotts/HTB-Walkthrough/main/bounty-hunter/Screenshot%202021-09-08%20at%203.56.21%20AM.png)
 
 	#Here we got the creds 
 ```
