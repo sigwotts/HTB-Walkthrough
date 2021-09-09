@@ -131,7 +131,7 @@ lxd:x:998:100::/var/snap/lxd/common/lxd:/bin/false
 usbmux:x:112:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
 
 ``` 
-![Image](https://raw.githubusercontent.com/sigwotts/HTB-Walkthrough/main/bounty-hunter/Screenshot%202021-09-08%20at%203.56.21%20AM.png)
+![Image](https://github.com/sigwotts/HTB-Walkthrough/blob/main/bounty-hunter/Screenshot%202021-09-08%20at%203.56.21%20AM.png)
 
 	#Here we got the creds 
 ```
