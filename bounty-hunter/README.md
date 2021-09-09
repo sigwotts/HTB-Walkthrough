@@ -72,6 +72,10 @@ $dbusername = "admin";
 $dbpassword = "m19RoAU0hP41A1sTsq6K";
 $testuser = "test";
 ```
+![Image](https://raw.githubusercontent.com/sigwotts/HTB-Walkthrough/main/bounty-hunter/Screenshot%202021-09-08%20at%203.56.36%20AM.png?token=AS3E3VMLGWIXHFH252PLCTTBHIZH6)
+
+
+
 #But we tried using ssh it didn't worked, then we use to see the /etc/passwd file
 
 
@@ -195,7 +199,6 @@ cat /root/root.txt
 ```
 0cc723be65032a28eadcc712c03defd5
 ```
-
 
 
 
