@@ -1,4 +1,4 @@
-#Machine name - Horizontal 
+# Machine name - Horizontal 
 
 ##Nmap resutls
 
